@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} - Exchange</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nav-links a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        .item-details {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .item-image {
+            flex: 1 1 300px;
+        }
+        .item-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .item-info {
+            flex: 2 1 400px;
+        }
+        .item-info h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        .item-info p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+        }
+        .info-label {
+            font-weight: bold;
+            color: #444;
+        }
+        .price-estimate {
+            font-weight: bold;
+            color: #28a745;
+        }
+        .item-author {
+            font-style: italic;
+            color: #888;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="{{ url_for('index') }}">Home</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('post_item') }}">Post Item</a>
+                <a href="{{ url_for('logout') }}">Logout ({{ current_user.username }})</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+        <div class="item-details">
+            <div class="item-image">
+                <img src="{{ url_for('static', filename='uploads/' + item.image_file) }}" alt="{{ item.name }}">
+            </div>
+            <div class="item-info">
+                <h1>{{ item.name }}</h1>
+                <p><span class="info-label">Description:</span> {{ item.description }}</p>
+                {% if item.price_estimate %}
+                    <p><span class="info-label">Estimated Value:</span> <span class="price-estimate">${{ "%.2f"|format(item.price_estimate) }}</span></p>
+                {% endif %}
+                <p><span class="info-label">Desired Exchange:</span> {{ item.desired_exchange }}</p>
+                <p class="item-author">Posted by: <a href="{{ url_for('user_profile', username=item.author.username) }}">{{ item.author.username }}</a> </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
