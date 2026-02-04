@@ -4,3 +4,4 @@ Werkzeug~=3.1.5
 Flask-Login~=0.6.3
 pillow~=12.1.0
 gunicorn
+SQLAlchemy
